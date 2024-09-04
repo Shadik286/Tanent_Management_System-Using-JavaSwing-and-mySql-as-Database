@@ -6,6 +6,8 @@ package tanentmanagement;
 
 import java.sql.Connection;
 import java.sql.*; 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
 import jdbc.Connectionpdr;
@@ -195,17 +197,17 @@ public class Flats extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(20, 20, 20)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(20, 20, 20)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -219,20 +221,20 @@ public class Flats extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                //        {null, null, null, null, null, null, null, null},
+                //        {null, null, null, null, null, null, null, null},
+                //        {null, null, null, null, null, null, null, null},
+                //        {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Apartment ID", "Bedrooms", "Washrooms", "Balconies", "Other", "Rent", "Rented To", "Number"
+                "Apartment ID", "Bedrooms", "Washrooms", "Balconies", "Other", "Rent", "Rented To", "Number", "Rented Amount"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -456,7 +458,15 @@ public class Flats extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     public boolean editable = false, adding = false;
-    public int rows;
+    public int rows; 
+    
+     public void findate() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy"); 
+        LocalDateTime now = LocalDateTime.now();
+        jLabel5.setText(dtf.format(now)); 
+        
+    }  
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here: 
          MainMenu mainmenu = new MainMenu();
@@ -466,9 +476,10 @@ public class Flats extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false); this.dispose();
-        TanentInfo tnt = new TanentInfo();
-        tnt.setVisible(true); tnt.PRINTINGTANENT();
+       this.setVisible(false); this.dispose();
+       TanentInfo tnt = new TanentInfo();  
+       tnt.findate();
+       tnt.setVisible(true); tnt.printingtanent();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -501,8 +512,11 @@ public class Flats extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here: 
-        String Data[] = {null, null, null, null, null, null};
+        // TODO add your handling code here:  
+        if(editable) {
+                    editable = false; jButton10.setEnabled(true);  
+        }
+        String Data[] = {null, null, null, null, null, null, null};
         DefaultTableModel mod = (DefaultTableModel)jTable1.getModel(); 
         mod.addRow(Data); 
         rows = mod.getRowCount(); 
@@ -510,7 +524,12 @@ public class Flats extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:  
+        // TODO add your handling code here:   
+        if(adding) {
+            DefaultTableModel mod = (DefaultTableModel)jTable1.getModel(); 
+            rows = mod.getRowCount(); mod.removeRow(rows - 1); 
+            adding = false; jButton9.setEnabled(true);
+        }
         editable = true; 
         jButton10.setEnabled(false);
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -559,7 +578,6 @@ public class Flats extends javax.swing.JFrame {
         if(adding) {
             try{ 
                 Connection conn = Connectionpdr.getCon();  
-                Statement st = conn.createStatement(); 
                 String id = mod.getValueAt(rows - 1, 0).toString(), rooms = (String) mod.getValueAt(rows - 1, 1);
                 String washroom = (String) mod.getValueAt(rows -1, 2), balconies = (String) mod.getValueAt(rows - 1, 3);
                 String other = (String) mod.getValueAt(rows - 1, 4), rent = (String) mod.getValueAt(rows - 1, 5);
@@ -613,14 +631,27 @@ public class Flats extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery("Select * from flat_info");
             while(rs.next()) { cnt++;
                 String flatid = rs.getString("Flat_ID"), rent = rs.getString("Rent"), bedrooms = rs.getString("Bedroom"), washrooms = rs.getString("Washrooms"); 
-                String Balconies = rs.getString("Balcony"), Other = rs.getString("Other");  
-                String Data[] = {flatid, bedrooms, washrooms, Balconies, Other, rent}; 
+                String Balconies = rs.getString("Balcony"), Other = rs.getString("Other");   
+                String rentedto = null, phone = null, discount = null;  
+                Statement sst = conn.createStatement();
+                ResultSet tmp = sst.executeQuery("SELECT * FROM tanent_info WHERE Date_of_leaving IS NULL AND Flat_ID = '"+flatid+"'");  
+                String rented_amount = null;
+                if(tmp.next()) {
+                     rentedto = tmp.getString("Name"); phone = tmp.getString("Phone"); discount = tmp.getString("Discount"); 
+                     int rr = Integer.parseInt(rent) - Integer.parseInt(discount);
+                     rented_amount = String.valueOf(rr);
+                } 
+          
+                String Data[] = {flatid, bedrooms, washrooms, Balconies, Other, rent, rentedto, phone, rented_amount}; 
                 DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
                 model.addRow(Data);
-            } 
+            }  
+//                    "Apartment ID", "Bedrooms", "Washrooms", "Balconies", "Other", "Rent", "Rented To", "Number" 
+           
             jLabel3.setText(String.valueOf(cnt));
             
-        } catch(Exception E) {
+        } catch(Exception E) { 
+            JOptionPane.showMessageDialog(rootPane, E);
             JOptionPane.showMessageDialog(rootPane, "Unexpected Error Occured, Try Again...");
         }
     }
